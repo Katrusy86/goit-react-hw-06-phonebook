@@ -7,7 +7,6 @@ import Contact from '../contact/Contact'
 import slideTransition from '../../transition/slide.module.css'
 import styles from './contactlist.module.css'
 
-// const ContactFilter = (contacts, filter) => {this.props.contacts.filter(contact=>contact.name.toLowerCase().includes(this.props.filter.toLowerCase()))}
 
 const ContactList = ({items, onDeleteContact}) => (
     <TransitionGroup component="ul" unmountonexit="true" className={styles.phoneBookList}>
