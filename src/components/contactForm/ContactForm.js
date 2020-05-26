@@ -12,7 +12,7 @@ class ContactForm extends Component{
     state = {
         name:'',
         number:'',
-        // isShow:false
+        isShow:false
     };
 
 
@@ -41,17 +41,17 @@ class ContactForm extends Component{
 
 
     render() {
-        const {name, number}=this.state
+        const {name, number, isShow}=this.state
             return (
                 <>
-                {/* <CSSTransition
+                <CSSTransition
                     in={isShow}
                     timeout={500}
                     unmountOnExit
                     classNames={slideTransition}
                 >
                 <Alert/>
-                </CSSTransition> */}
+                </CSSTransition>
                 <form className={styles.addContactForm} onSubmit = {this.handleSubmit}>
                     <label className={styles.label}> 
                         Name
