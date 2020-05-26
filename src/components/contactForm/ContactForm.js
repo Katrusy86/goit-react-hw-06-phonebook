@@ -6,13 +6,15 @@ import action from '../../redux/actions'
 import styles from './contactForm.module.css'
 import slideTransition from '../../transition/slide.module.css'
 import Alert from '../alert/Alert'
+import Notification from '../alert/Notification'
 import actions from '../../redux/actions';
 
 class ContactForm extends Component{
     state = {
         name:'',
         number:'',
-        isShow:false
+        isShow:false,
+        isOpen: false
     };
 
 
@@ -25,6 +27,12 @@ class ContactForm extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
+        const result = this.props.contacts.filter((contact)=>contact.name === this.state.name)
+        if(result.length > 0){
+            this.NotificationMessage(); 
+            return
+        }  
+        console.log(result);
         (this.state.name !== '' && this.state.number !== '' )?(       
         this.props.onAddContact({...this.state})
         ): this.alertMessage();
@@ -40,10 +48,23 @@ class ContactForm extends Component{
     }
 
 
+    NotificationMessage = ()=> {
+        this.setState (prevState=>({isOpen:!prevState.isOpen}))
+    }
+
     render() {
-        const {name, number, isShow}=this.state
+        const {name, number, isShow, isOpen}=this.state
             return (
                 <>
+                <CSSTransition
+                    in={isOpen}
+                    timeout={500}
+                    unmountOnExit
+                    classNames={slideTransition}
+                >
+                <Notification name={name} />
+                </CSSTransition>
+
                 <CSSTransition
                     in={isShow}
                     timeout={500}
@@ -68,6 +89,10 @@ class ContactForm extends Component{
             } 
 }
 
+const mapStateToProps = (state)=> ({
+    contacts:state.contacts
+})
+
 const mapDispatchToProps = {
     onAddContact:actions.addContact
 }
@@ -80,4 +105,4 @@ ContactForm.propTypes = {
 }
 
 
-export default connect(null, mapDispatchToProps)(ContactForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)
