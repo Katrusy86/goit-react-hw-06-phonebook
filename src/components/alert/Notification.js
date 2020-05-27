@@ -3,7 +3,7 @@ import alert from './alertMessage.module.css'
 
 
 
-const Notification = ({name}) => ( 
+const Notification = ({name=''}) => ( 
 <div className={alert.alert}>
 	<h2 className={alert.alert_title}>{`${name} is already in contacts!`}
 <span role="img" arial-label="emoji">

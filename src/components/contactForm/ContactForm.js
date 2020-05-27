@@ -14,7 +14,8 @@ class ContactForm extends Component{
         name:'',
         number:'',
         isShow:false,
-        isOpen: false
+        isOpen: false,
+        alert:''
     };
 
 
@@ -27,21 +28,26 @@ class ContactForm extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({alert:this.state.name})
         const result = this.props.contacts.filter((contact)=>contact.name === this.state.name)
         if(result.length > 0){
             this.NotificationMessage(); 
+            setTimeout(()=> {this.NotificationMessage()}, 2000)
             return
         }  
         console.log(result);
         (this.state.name !== '' && this.state.number !== '' )?(       
         this.props.onAddContact({...this.state})
-        ): this.alertMessage();
+        ): (()=>{this.alertMessage(); setTimeout(()=> {this.alertMessage()}, 2000)})()
+        this.contactsReset()
+    }
+
+    contactsReset = () => {
         this.setState({
             name:'',
             number:''
         })
-    };
-
+    }
 
     alertMessage = ()=> {
         this.setState (prevState=>({isShow:!prevState.isShow}))
@@ -49,7 +55,7 @@ class ContactForm extends Component{
 
 
     NotificationMessage = ()=> {
-        this.setState (prevState=>({isOpen:!prevState.isOpen}))
+        this.setState (prevState=>({isOpen:!prevState.isOpen}));
     }
 
     render() {
@@ -62,12 +68,12 @@ class ContactForm extends Component{
                     unmountOnExit
                     classNames={slideTransition}
                 >
-                <Notification name={name} />
+                <Notification name={this.state.alert} />
                 </CSSTransition>
 
                 <CSSTransition
                     in={isShow}
-                    timeout={500}
+                    timeout={1}
                     unmountOnExit
                     classNames={slideTransition}
                 >
